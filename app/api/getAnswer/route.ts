@@ -33,7 +33,10 @@ export async function POST(request: Request) {
         };
       } catch (e) {
         console.log(`error parsing ${result.name}, error: ${e}`);
-        return;
+        return {
+          ...result,
+          fullContent: "not available",
+        };
       }
     }),
   );
