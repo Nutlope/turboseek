@@ -1,6 +1,4 @@
 import Together from "together-ai";
-import { Readability } from "@mozilla/readability";
-import jsdom, { JSDOM } from "jsdom";
 
 const together = new Together({
   apiKey: process.env["TOGETHER_API_KEY"],
@@ -18,19 +16,20 @@ export async function POST(request: Request) {
   let finalResults = await Promise.all(
     sources.map(async (result: any) => {
       try {
-        const response = await fetch(result.url);
-        const html = await response.text();
-        const virtualConsole = new jsdom.VirtualConsole();
-        const dom = new JSDOM(html, { virtualConsole });
-
-        const doc = dom.window.document;
-        const parsed = new Readability(doc).parse();
-        let parsedContent = parsed
-          ? cleanedText(parsed.textContent)
-          : "Nothing found";
+        let res = await fetch("https://scrape.serper.dev", {
+          method: "POST",
+          headers: {
+            "X-API-KEY": process.env.SERPER_API_KEY || "",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            url: result.url,
+          }),
+        });
+        let { text } = await res.json();
         return {
           ...result,
-          fullContent: parsedContent,
+          fullContent: text,
         };
       } catch (e) {
         console.log(`error parsing ${result.name}, error: ${e}`);
