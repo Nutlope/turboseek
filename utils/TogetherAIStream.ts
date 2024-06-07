@@ -40,6 +40,13 @@ export async function TogetherAIStream(payload: TogetherAIStreamPayload) {
     body: JSON.stringify(payload),
   });
 
+  // if the request fails we dont want to return a stream, because there's
+  // nothing to stream. let's throw and let the caller decide what to
+  // do next.
+  if (!res.ok) {
+    throw new Error('Failed to fetch')
+  }
+
   const readableStream = new ReadableStream({
     async start(controller) {
       // callback
