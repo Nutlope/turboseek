@@ -23,16 +23,25 @@ export async function POST(request: Request) {
   let finalResults = await Promise.all(
     sources.map(async (result: any) => {
       try {
+        console.log('parsing source', result.url);
         const response = await fetch(result.url);
         const html = await response.text();
+        console.log('got html', html.length);
         const virtualConsole = new jsdom.VirtualConsole();
         const dom = new JSDOM(html, { virtualConsole });
+        console.log('got jsdom');
 
         const doc = dom.window.document;
         const parsed = new Readability(doc).parse();
         let parsedContent = parsed
           ? cleanedText(parsed.textContent)
           : "Nothing found";
+
+        console.log({
+          source: result.url,
+          length: parsedContent.length,
+          tokens: parsedContent.length / 4,
+        })
 
         return {
           ...result,
