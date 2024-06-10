@@ -31,7 +31,15 @@
 3. Create an account with Azure to get a [Bing search API key](https://www.microsoft.com/en-us/bing/apis/bing-web-search-api)
 4. Create an account at [Helicone](https://www.helicone.ai/)
 5. Create a `.env` (use the `.example.env` for reference) and replace the API keys
-6. Run `npm install` and `npm run dev` to install dependencies and run locally
+6. Set the SEARCH_API environment variable to either bing or serper to choose the desired search API
+7. Run `npm install` and `npm run dev` to install dependencies and run locally
+
+## Docker
+You can also run the application using Docker. Make sure you have Docker installed on your machine.
+1. Create a .env file in the project root directory with the required environment variables (refer to the .example.env file)
+2. Build the Docker image: docker-compose build
+3. Run the Docker container: docker-compose up
+4. Access the application by opening your browser and navigating to http://localhost:3000
 
 ## Future tasks
 
