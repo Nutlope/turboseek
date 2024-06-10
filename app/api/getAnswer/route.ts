@@ -5,6 +5,8 @@ import {
   TogetherAIStreamPayload,
 } from "@/utils/TogetherAIStream";
 import Together from "together-ai";
+import { encodeChat } from "gpt-tokenizer/model/gpt-3.5-turbo";
+import { ChatMessage } from "gpt-tokenizer/GptEncoding";
 
 const together = new Together({
   apiKey: process.env["TOGETHER_API_KEY"],
@@ -18,6 +20,8 @@ export const maxDuration = 60;
 
 export async function POST(request: Request) {
   let { question, sources } = await request.json();
+
+  console.log("fetching sources...");
 
   console.log("[getAnswer] Fetching text from source URLS");
   let finalResults = await Promise.all(
@@ -48,14 +52,16 @@ export async function POST(request: Request) {
     }),
   );
 
+  console.log("finished fetching sources");
+
   // const mainAnswerPrompt = Array.from(Array(10000).keys())
   //   .map(() => `Lorem ipsum`)
   //   .join("\n");
   // console.log(mainAnswerPrompt.length);
 
-  let debug = finalResults.map(
-    (result, index) => `[[citation:${index}]] ${result.fullContent} \n\n`,
-  );
+  // let debug = finalResults.map(
+  //   (result, index) => `[[citation:${index}]] ${result.fullContent} \n\n`,
+  // );
 
   const mainAnswerPrompt = `
   Given a user question and some context, please write a clean, concise and accurate answer to the question based on the context. You will be given a set of related contexts to the question, each starting with a reference number like [[citation:x]], where x is a number. Please use the context when crafting your answer.
@@ -72,16 +78,22 @@ export async function POST(request: Request) {
   console.log("prompt length", mainAnswerPrompt.length);
   console.log("est token length", mainAnswerPrompt.length / 4);
 
+  let messages = [
+    { role: "system", content: mainAnswerPrompt },
+    {
+      role: "user",
+      content: question,
+    },
+  ] satisfies ChatMessage[];
+
+  let chatTokens = encodeChat(messages);
+
+  console.log("tokens length", chatTokens.length);
+
   try {
     const payload: TogetherAIStreamPayload = {
       model: "mistralai/Mixtral-8x7B-Instruct-v0.1",
-      messages: [
-        { role: "system", content: mainAnswerPrompt },
-        {
-          role: "user",
-          content: question,
-        },
-      ],
+      messages,
       stream: true,
     };
 
