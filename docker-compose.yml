@@ -1,0 +1,12 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - TOGETHER_API_KEY=${TOGETHER_API_KEY}
+      - HELICONE_API_KEY=${HELICONE_API_KEY}
+      - BING_SEARCH_API_KEY=${BING_SEARCH_API_KEY}
+      - SERPER_API_KEY=${SERPER_API_KEY}
+      - SEARCH_API=${SEARCH_API}
