@@ -4,7 +4,9 @@ import { Spider } from "@spider-cloud/spider-client";
 
 let excludedSites = ["youtube.com"];
 
-let searchEngine: "spider" | "bing" = "spider";
+type SearchEngine = "bing" | "serper" | "spider";
+
+let searchEngine: SearchEngine = "serper";
 
 export async function POST(request: Request) {
   let { question } = await request.json();
@@ -93,8 +95,6 @@ export async function POST(request: Request) {
       url: result.url,
       source: "spider",
     }));
-
-    // console.log(results);
 
     return NextResponse.json(results);
   }

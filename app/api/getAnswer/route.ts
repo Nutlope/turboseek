@@ -47,7 +47,6 @@ export async function POST(request: Request) {
           let parsedContent = parsed
             ? cleanedText(parsed.textContent)
             : "Nothing found";
-          console.log("parsed content", parsedContent);
 
           return {
             ...result,
