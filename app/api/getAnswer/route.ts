@@ -5,6 +5,7 @@ import {
   TogetherAIStreamPayload,
 } from "@/utils/TogetherAIStream";
 import Together from "together-ai";
+import { Spider } from "@spider-cloud/spider-client";
 
 const together = new Together({
   apiKey: process.env["TOGETHER_API_KEY"],
@@ -23,22 +24,36 @@ export async function POST(request: Request) {
   let finalResults = await Promise.all(
     sources.map(async (result: any) => {
       try {
-        // Fetch the source URL, or abort if it's been 3 seconds
-        const response = await fetchWithTimeout(result.url);
-        const html = await response.text();
-        const virtualConsole = new jsdom.VirtualConsole();
-        const dom = new JSDOM(html, { virtualConsole });
+        if (sources[0].source === "spider") {
+          console.log("fetching with spider", result.url);
+          const spider = new Spider({
+            apiKey: process.env.SPIDER_API_KEY,
+          });
+          const spiderResult = await spider.scrapeUrl(result.url, { return_format: "markdown", metadata: false, readability: true });
+          return {
+            ...result,
+            fullContent: spiderResult[0].content.toString(),
+          };
+        } else {
+          console.log("fetching", result.url)
+          // Fetch the source URL, or abort if it's been 3 seconds
+          const response = await fetchWithTimeout(result.url);
+          const html = await response.text();
+          const virtualConsole = new jsdom.VirtualConsole();
+          const dom = new JSDOM(html, { virtualConsole });
 
-        const doc = dom.window.document;
-        const parsed = new Readability(doc).parse();
-        let parsedContent = parsed
-          ? cleanedText(parsed.textContent)
-          : "Nothing found";
+          const doc = dom.window.document;
+          const parsed = new Readability(doc).parse();
+          let parsedContent = parsed
+            ? cleanedText(parsed.textContent)
+            : "Nothing found";
+          console.log("parsed content", parsedContent);
 
-        return {
-          ...result,
-          fullContent: parsedContent,
-        };
+          return {
+            ...result,
+            fullContent: parsedContent,
+          };
+        }
       } catch (e) {
         console.log(`error parsing ${result.name}, error: ${e}`);
         return {
