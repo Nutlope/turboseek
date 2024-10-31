@@ -67,7 +67,7 @@ export async function POST(request: Request) {
 
   try {
     const payload: TogetherAIStreamPayload = {
-      model: "mistralai/Mixtral-8x7B-Instruct-v0.1",
+      model: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
       messages: [
         { role: "system", content: mainAnswerPrompt },
         {
@@ -94,7 +94,7 @@ export async function POST(request: Request) {
       "[getAnswer] Answer stream failed. Try fetching non-stream answer.",
     );
     let answer = await together.chat.completions.create({
-      model: "mistralai/Mixtral-8x7B-Instruct-v0.1",
+      model: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
       messages: [
         { role: "system", content: mainAnswerPrompt },
         {

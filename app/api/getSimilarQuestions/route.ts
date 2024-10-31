@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     ],
     // @ts-ignore
     response_format: { type: "json_object", schema: jsonSchema },
-    model: "mistralai/Mixtral-8x7B-Instruct-v0.1",
+    model: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
   });
 
   let questions = similarQuestions.choices?.[0].message?.content || "[]";

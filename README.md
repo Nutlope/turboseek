@@ -7,12 +7,14 @@
   An open source AI search engine. Powered by Together.ai.
 </p>
 
+> If you want to learn how to build this, check out [**the tutorial**](https://docs.together.ai/docs/ai-search-engine)!
+
 ## Tech stack
 
 - Next.js app router with Tailwind
 - Together AI for LLM inference
-- Mixtral 8x7B & Llama-3 for the LLMs
-- Bing for the search API
+- Llama 3.1 8B and 70B for the LLMs
+- Bing / Serper API for the search API
 - Helicone for observability
 - Plausible for website analytics
 
@@ -21,8 +23,8 @@
 1. Take in a user's question
 2. Make a request to the bing search API to look up the top 6 results and show them
 3. Scrape text from the 6 links bing sent back and store it as context
-4. Make a request to Mixtral-8x7B with the user's question + context & stream it back to the user
-5. Make another request to Llama-3-8B to come up with 3 related questions the user can follow up with
+4. Make a request to Llama 3.1 70B with the user's question + context & stream it back to the user
+5. Make another request to Llama 3.1 8B to come up with 3 related questions the user can follow up with
 
 ## Cloning & running
 
