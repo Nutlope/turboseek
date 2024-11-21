@@ -6,15 +6,18 @@
   .text-balance {
     text-wrap: balance;
   }
-  /* Hide scrollbar for Chrome, Safari and Opera */
+
+  /* Hide scrollbar for Chrome, Safari, and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  /* Hide scrollbar for IE, Edge and Firefox */
+
+  /* Hide scrollbar for IE, Edge, and Firefox */
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+
   .loader {
     text-align: left;
     display: flex;
@@ -26,7 +29,6 @@
     vertical-align: middle;
     width: 7px;
     height: 7px;
-    /* background: #4b4b4b; */
     background: white;
     border-radius: 50%;
     animation: loader 0.6s infinite alternate;
@@ -51,6 +53,14 @@
       transform: scale(1);
     }
   }
+}
+
+.share-button {
+  @apply bg-blue-500 text-white border-none px-4 py-2 cursor-pointer rounded-lg;
+}
+
+.share-button:hover {
+  @apply bg-blue-700;
 }
 
 body {

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Toaster, toast } from "react-hot-toast";
+import ShareButton from "./ShareButton";
 
 export default function Answer({ answer }: { answer: string }) {
   return (
@@ -8,7 +9,7 @@ export default function Answer({ answer }: { answer: string }) {
         <Image
           unoptimized
           src="/img/Info.svg"
-          alt="footer"
+          alt="info-icon"
           width={24}
           height={24}
         />
@@ -19,24 +20,17 @@ export default function Answer({ answer }: { answer: string }) {
             <Image
               unoptimized
               src="/img/Info.svg"
-              alt="footer"
+              alt="info-icon"
               width={24}
               height={24}
               className="block lg:hidden"
             />
             <h3 className="text-base font-bold uppercase text-black">
-              Answer:{" "}
+              Answer:
             </h3>
           </div>
           {answer && (
             <div className="flex items-center gap-3">
-              {/* <Image unoptimized
-                src="/img/link.svg"
-                alt="footer"
-                width={20}
-                height={20}
-                className="cursor-pointer"
-              /> */}
               <button
                 onClick={() => {
                   navigator.clipboard.writeText(answer.trim());
@@ -48,19 +42,13 @@ export default function Answer({ answer }: { answer: string }) {
                 <Image
                   unoptimized
                   src="/img/copy.svg"
-                  alt="footer"
+                  alt="copy-icon"
                   width={20}
                   height={20}
                   className="cursor-pointer"
                 />
               </button>
-              {/* <Image unoptimized
-                src="/img/share.svg"
-                alt="footer"
-                width={20}
-                height={20}
-                className="cursor-pointer"
-              /> */}
+              <ShareButton textToShare={answer} />
             </div>
           )}
         </div>
