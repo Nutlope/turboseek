@@ -41,7 +41,6 @@
 - [ ] Add a tokenizer to smartly count number of tokens for each source and ensure we're not going over
 - [ ] Add a regenerate option for a user to re-generate
 - [ ] Make sure the answer correctly cites all the sources in the text & number the citations in the UI
-- [ ] Add sharability to allow folks to share answers
 - [ ] Automatically scroll when an answer is happening, especially for mobile
 - [ ] Fix hard refresh in the header and footer by migrating answers to a new page
 - [ ] Add upstash redis for caching results & rate limiting users
