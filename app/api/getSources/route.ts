@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { Spider } from "@spider-cloud/spider-client";
 
 let excludedSites = ["youtube.com"];
 
-let searchEngine: "bing" | "serper" = "serper";
+type SearchEngine = "bing" | "serper" | "spider";
+
+let searchEngine: SearchEngine = "serper";
 
 export async function POST(request: Request) {
   let { question } = await request.json();
@@ -75,6 +78,22 @@ export async function POST(request: Request) {
     let results = data.organic.map((result) => ({
       name: result.title,
       url: result.link,
+    }));
+
+    return NextResponse.json(results);
+  } else if (searchEngine === "spider") {
+    const SPIDER_API_KEY = process.env["SPIDER_API_KEY"];
+    if (!SPIDER_API_KEY) {
+      throw new Error("SPIDER_API_KEY is required");
+    }
+
+    const app = new Spider({ apiKey: SPIDER_API_KEY });
+    const response = await app.search(question, { fetch_page_content: false, limit: 5 });
+
+    let results = response.content.map((result: { title: string, url: string }) => ({
+      name: result.title,
+      url: result.url,
+      source: "spider",
     }));
 
     return NextResponse.json(results);
