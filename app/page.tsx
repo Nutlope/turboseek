@@ -1,3 +1,4 @@
+
 "use client";
 
 import Answer from "@/components/Answer";
@@ -9,12 +10,8 @@ import SimilarTopics from "@/components/SimilarTopics";
 import Sources from "@/components/Sources";
 import Image from "next/image";
 import { useRef, useState } from "react";
-import {
-  createParser,
-  ParsedEvent,
-  ReconnectInterval,
-} from "eventsource-parser";
-
+import { createParser, ParsedEvent, ReconnectInterval } from "eventsource-parser";
+import { RotateCcw } from "lucide-react";
 export default function Home() {
   const [promptValue, setPromptValue] = useState("");
   const [question, setQuestion] = useState("");
@@ -24,6 +21,7 @@ export default function Home() {
   const [answer, setAnswer] = useState("");
   const [similarQuestions, setSimilarQuestions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [regenerating, setRegenerating] = useState(false); // New state
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const handleDisplayResult = async (newQuestion?: string) => {
@@ -50,7 +48,6 @@ export default function Home() {
     });
     if (sourcesResponse.ok) {
       let sources = await sourcesResponse.json();
-
       setSources(sources);
     } else {
       setSources([]);
@@ -75,7 +72,6 @@ export default function Home() {
       return;
     }
 
-    // This data is a ReadableStream
     const data = response.body;
     if (!data) {
       return;
@@ -93,7 +89,6 @@ export default function Home() {
       }
     };
 
-    // https://web.dev/streams/#the-getreader-and-read-methods
     const reader = data.getReader();
     const decoder = new TextDecoder();
     const parser = createParser(onParse);
@@ -123,6 +118,24 @@ export default function Home() {
     setSources([]);
     setSimilarQuestions([]);
   };
+
+  // New function for regenerating answer
+ const handleRegenerate = async () => {
+   if (!question) return;
+
+   setRegenerating(true);
+   setAnswer("");
+   setSources([]);
+   setSimilarQuestions([]);
+
+   await Promise.all([
+     handleSourcesAndAnswer(question), // Fetch answer & sources
+     handleSimilarQuestions(question), // Fetch similar questions
+   ]);
+
+   setRegenerating(false);
+ };
+
 
   return (
     <>
@@ -156,15 +169,33 @@ export default function Home() {
                   </div>
                   <div className="grow">&quot;{question}&quot;</div>
                 </div>
-                <>
-                  <Sources sources={sources} isLoading={isLoadingSources} />
-                  <Answer answer={answer} />
-                  <SimilarTopics
-                    similarQuestions={similarQuestions}
-                    handleDisplayResult={handleDisplayResult}
-                    reset={reset}
-                  />
-                </>
+
+                <Sources sources={sources} isLoading={isLoadingSources} />
+
+                <Answer answer={answer} />
+
+               
+
+                <SimilarTopics
+                  similarQuestions={similarQuestions}
+                  handleDisplayResult={handleDisplayResult}
+                  reset={reset}
+                />
+
+             
+                <div className="mt-4 flex justify-end">
+                  <button
+                    onClick={handleRegenerate}
+                    className="flex items-center justify-center rounded-full bg-[#3A3738] p-2 text-white shadow-md transition-all hover:bg-[#3A3738] disabled:opacity-50 "
+                    disabled={regenerating}
+                  >
+                    {regenerating ? (
+                      <RotateCcw className="bg- h-4 w-4 animate-spin text-white" />
+                    ) : (
+                      <RotateCcw className="h-4 w-4 text-white" />
+                    )}
+                  </button>
+                </div>
               </div>
 
               <div className="pt-1 sm:pt-2" ref={chatContainerRef}></div>
@@ -185,3 +216,9 @@ export default function Home() {
     </>
   );
 }
+
+
+
+
+
+
