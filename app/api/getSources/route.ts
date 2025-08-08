@@ -9,11 +9,9 @@ export async function POST(request: Request) {
 
   try {
     const response = await exaClient.searchAndContents(question, {
-      numResults: 6,
+      numResults: 9,
       excludeDomains: excludedSites,
-      useAutoprompt: true,
-      type: "fast",
-      livecrawl: "never"
+      type: "auto",
     });
 
     let results: SearchResults[] = response.results.map((result) => ({

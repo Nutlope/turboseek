@@ -39,7 +39,7 @@ const SimilarTopics = ({
           {similarQuestions.length > 0 ? (
             similarQuestions.map((item, index) => (
               <button
-                className={`flex w-full cursor-pointer items-center gap-4 py-4 ${
+                className={`flex w-full cursor-pointer items-center gap-4 py-4 text-left ${
                   index > 0 ? "border-t border-gray-200" : ""
                 }`}
                 key={item}
