@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     `;
 
     const result = streamText({
-      model: togetherClientAISDK("meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"),
+      model: togetherClientAISDK("openai/gpt-oss-20b"),
       system: mainAnswerPrompt,
       messages: [
         {
