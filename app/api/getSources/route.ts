@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { exaClient } from "@/utils/clients";
+import { SearchResults } from "@/utils/sharedTypes";
 
 let excludedSites = ["youtube.com"];
 
@@ -11,12 +12,14 @@ export async function POST(request: Request) {
       numResults: 6,
       excludeDomains: excludedSites,
       useAutoprompt: true,
-      type: "neural",
+      type: "auto",
+
     });
 
-    let results = response.results.map((result) => ({
-      name: result.title,
+    let results: SearchResults[] = response.results.map((result) => ({
+      title: result.title || undefined,
       url: result.url,
+      content: result.text
     }));
 
     return NextResponse.json(results);

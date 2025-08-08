@@ -14,12 +14,13 @@ import {
   ParsedEvent,
   ReconnectInterval,
 } from "eventsource-parser";
+import { SearchResults } from "@/utils/sharedTypes";
 
 export default function Home() {
   const [promptValue, setPromptValue] = useState("");
   const [question, setQuestion] = useState("");
   const [showResult, setShowResult] = useState(false);
-  const [sources, setSources] = useState<{ name: string; url: string }[]>([]);
+  const [sources, setSources] = useState<SearchResults[]>([]);
   const [isLoadingSources, setIsLoadingSources] = useState(false);
   const [answer, setAnswer] = useState("");
   const [similarQuestions, setSimilarQuestions] = useState<string[]>([]);
@@ -48,10 +49,10 @@ export default function Home() {
       method: "POST",
       body: JSON.stringify({ question }),
     });
+    let sourcesLocal = [];
     if (sourcesResponse.ok) {
-      let sources = await sourcesResponse.json();
-
-      setSources(sources);
+      sourcesLocal = await sourcesResponse.json();
+      setSources(sourcesLocal);
     } else {
       setSources([]);
     }
@@ -62,7 +63,7 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ question, sources }),
+      body: JSON.stringify({ question, sources: sourcesLocal }),
     });
 
     if (!response.ok) {

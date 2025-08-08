@@ -1,11 +1,12 @@
 import Image from "next/image";
 import SourceCard from "./SourceCard";
+import { SearchResults } from "@/utils/sharedTypes";
 
 export default function Sources({
   sources,
   isLoading,
 }: {
-  sources: { name: string; url: string }[];
+  sources: SearchResults[];
   isLoading: boolean;
 }) {
   return (
