@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/togetherai": "^1.0.3",
+    "ai": "^5.0.8",
     "eventsource-parser": "^1.1.2",
     "exa-js": "^1.8.27",
     "next": "14.2.3",

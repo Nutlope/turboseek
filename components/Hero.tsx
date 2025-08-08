@@ -20,19 +20,13 @@ const Hero: FC<THeroProps> = ({
   return (
     <div className="flex flex-col items-center justify-center">
       <a
-        className="mb-4 inline-flex h-7 shrink-0 items-center gap-[9px] rounded-[50px] border-[0.5px] border-solid border-[#E6E6E6] bg-white px-3 py-4 shadow-[0px_1px_1px_0px_rgba(0,0,0,0.25)]"
+        className="mb-4 inline-flex h-8 shrink-0 items-center gap-[9px] rounded-[50px] border-[0.5px] border-solid border-[#E6E6E6] bg-white px-3 py-4 shadow-[0px_1px_1px_0px_rgba(0,0,0,0.25)]"
         href="https://www.togetherai.link/"
         target="_blank"
       >
-        <Image
-          unoptimized
-          src="/img/together-ai.svg"
-          alt="hero"
-          width={18}
-          height={18}
-        />
-        <span className="text-center text-base font-light leading-[normal] text-[#1B1B16]">
-          Powered by Together AI and OpenAI gpt-oss
+
+        <span className="text-center text-base font-light items-end leading-[normal] text-[rgb(27,27,22)] flex flex-row gap-1">
+          <span>Powered by</span> <img src="/togetherai.svg" alt="togetherai" /><span>and OpenAI gpt-oss</span>
         </span>
       </a>
       <h2 className="bg-custom-gradient bg-clip-text pb-7 pt-2 text-center text-3xl font-semibold leading-[normal] lg:text-[64px]">

@@ -70,40 +70,30 @@ export default function Home() {
       throw new Error(response.statusText);
     }
 
-    if (response.status === 202) {
-      const fullAnswer = await response.text();
-      setAnswer(fullAnswer);
-      return;
+    // Handle the streaming response
+    const reader = response.body?.getReader();
+    if (!reader) {
+      throw new Error('No response body');
     }
 
-    // This data is a ReadableStream
-    const data = response.body;
-    if (!data) {
-      return;
-    }
-
-    const onParse = (event: ParsedEvent | ReconnectInterval) => {
-      if (event.type === "event") {
-        const data = event.data;
-        try {
-          const text = JSON.parse(data).text ?? "";
-          setAnswer((prev) => prev + text);
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    };
-
-    // https://web.dev/streams/#the-getreader-and-read-methods
-    const reader = data.getReader();
     const decoder = new TextDecoder();
-    const parser = createParser(onParse);
     let done = false;
+    let accumulatedText = '';
+
     while (!done) {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
-      const chunkValue = decoder.decode(value);
-      parser.feed(chunkValue);
+      
+      if (done) break;
+      
+      // Process each chunk of data
+      const chunk = decoder.decode(value, { stream: true });
+      
+      // The Vercel AI SDK streams text directly, so we can append it directly
+      if (chunk) {
+        accumulatedText += chunk;
+        setAnswer(accumulatedText);
+      }
     }
   }
 

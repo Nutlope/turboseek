@@ -2,6 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  .prose {
+    @apply text-gray-800 leading-relaxed;
+  }
+  
+  .prose h1, 
+  .prose h2, 
+  .prose h3, 
+  .prose h4 {
+    @apply font-bold text-gray-900 mt-6 mb-4;
+  }
+  
+  .prose h1 { @apply text-2xl; }
+  .prose h2 { @apply text-xl; }
+  .prose h3 { @apply text-lg; }
+  
+  .prose p {
+    @apply my-4;
+  }
+  
+  .prose a {
+    @apply text-blue-600 hover:underline;
+  }
+  
+  .prose ul,
+  .prose ol {
+    @apply my-3 pl-6 list-disc;
+  }
+  
+  .prose ol {
+    list-style-type: decimal;
+  }
+  
+  .prose li {
+    @apply my-1.5 pl-1;
+  }
+  
+  .prose code {
+    @apply bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+  
+  .prose pre {
+    @apply bg-gray-100 p-4 rounded-md overflow-x-auto my-4;
+  }
+  
+  .prose pre code {
+    @apply bg-transparent p-0;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

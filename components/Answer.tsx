@@ -2,6 +2,13 @@ import Image from "next/image";
 import { Toaster, toast } from "react-hot-toast";
 
 export default function Answer({ answer }: { answer: string }) {
+  // Function to strip HTML tags from the answer
+  const stripHtml = (html: string) => {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
+  };
+
   return (
     <div className="container flex h-auto w-full shrink-0 gap-4 rounded-lg border border-solid border-[#C2C2C2] bg-white p-4 lg:p-8">
       <div className="hidden lg:block">
@@ -30,16 +37,10 @@ export default function Answer({ answer }: { answer: string }) {
           </div>
           {answer && (
             <div className="flex items-center gap-3">
-              {/* <Image unoptimized
-                src="/img/link.svg"
-                alt="footer"
-                width={20}
-                height={20}
-                className="cursor-pointer"
-              /> */}
               <button
                 onClick={() => {
-                  navigator.clipboard.writeText(answer.trim());
+                  const textOnly = stripHtml(answer);
+                  navigator.clipboard.writeText(textOnly.trim());
                   toast("Answer copied to clipboard", {
                     icon: "✂️",
                   });
@@ -54,29 +55,24 @@ export default function Answer({ answer }: { answer: string }) {
                   className="cursor-pointer"
                 />
               </button>
-              {/* <Image unoptimized
-                src="/img/share.svg"
-                alt="footer"
-                width={20}
-                height={20}
-                className="cursor-pointer"
-              /> */}
             </div>
           )}
         </div>
         <div className="flex flex-wrap content-center items-center gap-[15px]">
-          <div className="w-full whitespace-pre-wrap text-base font-light leading-[152.5%] text-black">
-            {answer ? (
-              answer.trim()
-            ) : (
+          {answer ?
+            <div
+              className="w-full text-base font-light leading-[152.5%] text-black prose"
+              dangerouslySetInnerHTML={{ __html: answer ? answer.trim() : '' }}
+            />
+            :
+            <>
               <div className="flex w-full flex-col gap-2">
                 <div className="h-6 w-full animate-pulse rounded-md bg-gray-300" />
                 <div className="h-6 w-full animate-pulse rounded-md bg-gray-300" />
                 <div className="h-6 w-full animate-pulse rounded-md bg-gray-300" />
                 <div className="h-6 w-full animate-pulse rounded-md bg-gray-300" />
               </div>
-            )}
-          </div>
+            </>}
         </div>
       </div>
       <Toaster
