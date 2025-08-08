@@ -3,7 +3,7 @@ import { Toaster, toast } from "react-hot-toast";
 
 export default function Answer({ answer }: { answer: string }) {
   return (
-    <div className="container flex h-auto w-full shrink-0 gap-4 rounded-lg border border-solid border-[#C2C2C2] bg-white p-5 lg:p-10">
+    <div className="container flex h-auto w-full shrink-0 gap-4 rounded-lg border border-solid border-[#C2C2C2] bg-white p-4 lg:p-8">
       <div className="hidden lg:block">
         <Image
           unoptimized

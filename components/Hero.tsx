@@ -32,7 +32,7 @@ const Hero: FC<THeroProps> = ({
           height={18}
         />
         <span className="text-center text-base font-light leading-[normal] text-[#1B1B16]">
-          Powered by Together AI
+          Powered by Together AI and OpenAI gpt-oss
         </span>
       </a>
       <h2 className="bg-custom-gradient bg-clip-text pb-7 pt-2 text-center text-3xl font-semibold leading-[normal] lg:text-[64px]">

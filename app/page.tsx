@@ -141,7 +141,7 @@ export default function Home() {
           <div className="flex h-full min-h-[68vh] w-full grow flex-col justify-between">
             <div className="container w-full space-y-2">
               <div className="container space-y-2">
-                <div className="container flex w-full items-start gap-3 px-5 pt-2 lg:px-10">
+                <div className="container flex w-full items-start gap-3 px-5 py-3 lg:px-10">
                   <div className="flex w-fit items-center gap-4">
                     <Image
                       unoptimized
