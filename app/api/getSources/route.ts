@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { exaClient } from "@/utils/clients";
 import { SearchResults } from "@/utils/sharedTypes";
 
-let excludedSites = ["youtube.com"];
+let excludedSites = ["youtube.com", "nytimes.com", "x.com"];
 
 export async function POST(request: Request) {
   let { question } = await request.json();
@@ -12,8 +12,8 @@ export async function POST(request: Request) {
       numResults: 6,
       excludeDomains: excludedSites,
       useAutoprompt: true,
-      type: "auto",
-
+      type: "fast",
+      livecrawl: "never"
     });
 
     let results: SearchResults[] = response.results.map((result) => ({

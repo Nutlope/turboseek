@@ -1,5 +1,3 @@
-import { Readability } from "@mozilla/readability";
-import jsdom, { JSDOM } from "jsdom";
 import {
   TogetherAIStream,
   TogetherAIStreamPayload,
@@ -60,7 +58,7 @@ export async function POST(request: Request) {
       "[getAnswer] Answer stream failed. Try fetching non-stream answer.",
     );
     let answer = await togetherClient.chat.completions.create({
-      model: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      model: "openai/gpt-oss-20b",
       messages: [
         { role: "system", content: mainAnswerPrompt },
         {
