@@ -4,15 +4,8 @@ import {
   TogetherAIStream,
   TogetherAIStreamPayload,
 } from "@/utils/TogetherAIStream";
-import Together from "together-ai";
+import { togetherClient } from "@/utils/clients";
 
-const together = new Together({
-  apiKey: process.env["TOGETHER_API_KEY"],
-  baseURL: "https://together.helicone.ai/v1",
-  defaultHeaders: {
-    "Helicone-Auth": `Bearer ${process.env.HELICONE_API_KEY}`,
-  },
-});
 
 export const maxDuration = 45;
 
@@ -93,7 +86,7 @@ export async function POST(request: Request) {
     console.log(
       "[getAnswer] Answer stream failed. Try fetching non-stream answer.",
     );
-    let answer = await together.chat.completions.create({
+    let answer = await togetherClient.chat.completions.create({
       model: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
       messages: [
         { role: "system", content: mainAnswerPrompt },
