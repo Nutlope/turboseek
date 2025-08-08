@@ -35,10 +35,7 @@ export default function Home() {
     setQuestion(newQuestion);
     setPromptValue("");
 
-    await Promise.all([
-      handleSourcesAndAnswer(newQuestion),
-      handleSimilarQuestions(newQuestion),
-    ]);
+    await handleSourcesAndAnswer(newQuestion);
 
     setLoading(false);
   };
@@ -57,6 +54,9 @@ export default function Home() {
       setSources([]);
     }
     setIsLoadingSources(false);
+
+    // Generate similar questions using both question and sources
+    handleSimilarQuestions(question, sourcesLocal);
 
     const response = await fetch("/api/getAnswer", {
       method: "POST",
@@ -107,10 +107,13 @@ export default function Home() {
     }
   }
 
-  async function handleSimilarQuestions(question: string) {
+  async function handleSimilarQuestions(
+    question: string,
+    sources: SearchResults[],
+  ) {
     let res = await fetch("/api/getSimilarQuestions", {
       method: "POST",
-      body: JSON.stringify({ question }),
+      body: JSON.stringify({ question, sources }),
     });
     let questions = await res.json();
     setSimilarQuestions(questions);
