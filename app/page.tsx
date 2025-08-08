@@ -9,11 +9,6 @@ import SimilarTopics from "@/components/SimilarTopics";
 import Sources from "@/components/Sources";
 import Image from "next/image";
 import { useRef, useState } from "react";
-import {
-  createParser,
-  ParsedEvent,
-  ReconnectInterval,
-} from "eventsource-parser";
 import { SearchResults } from "@/utils/sharedTypes";
 
 export default function Home() {
@@ -83,12 +78,12 @@ export default function Home() {
     while (!done) {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
-      
+
       if (done) break;
-      
+
       // Process each chunk of data
       const chunk = decoder.decode(value, { stream: true });
-      
+
       // The Vercel AI SDK streams text directly, so we can append it directly
       if (chunk) {
         accumulatedText += chunk;

@@ -14,9 +14,6 @@ importers:
       ai:
         specifier: ^5.0.8
         version: 5.0.8(zod@3.25.76)
-      eventsource-parser:
-        specifier: ^1.1.2
-        version: 1.1.2
       exa-js:
         specifier: ^1.8.27
         version: 1.8.27(ws@8.18.3)
@@ -38,12 +35,6 @@ importers:
       together-ai:
         specifier: 0.21.1
         version: 0.21.1
-      zod:
-        specifier: ^3.23.8
-        version: 3.25.76
-      zod-to-json-schema:
-        specifier: ^3.23.0
-        version: 3.24.6(zod@3.25.76)
     devDependencies:
       '@types/jsdom':
         specifier: ^21.1.6
@@ -859,10 +850,6 @@ packages:
   esutils@2.0.3:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
-
-  eventsource-parser@1.1.2:
-    resolution: {integrity: sha512-v0eOBUbiaFojBu2s2NPBfYUoRR9GjcDNvCXVaqEf5vVfpIAh9f8RCo4vXTP8c63QRKCFwoLpMpTdPwwhEKVgzA==}
-    engines: {node: '>=14.18'}
 
   eventsource-parser@3.0.3:
     resolution: {integrity: sha512-nVpZkTMM9rF6AQ9gPJpFsNAMt48wIzB5TQgiTLdHiuO8XEDhUgZEhqKlZWXbIzo9VmJ/HvysHqEaVeD5v9TPvA==}
@@ -2938,8 +2925,6 @@ snapshots:
   estraverse@5.3.0: {}
 
   esutils@2.0.3: {}
-
-  eventsource-parser@1.1.2: {}
 
   eventsource-parser@3.0.3: {}
 
