@@ -10,7 +10,7 @@ const SimilarTopics = ({
   reset: () => void;
 }) => {
   return (
-    <div className="container flex h-auto w-full shrink-0 gap-4 rounded-lg border border-solid border-[#C2C2C2] bg-white p-5 lg:p-10">
+    <div className="container flex h-auto w-full shrink-0 gap-4 rounded-lg border border-solid border-[#C2C2C2] bg-white p-4 lg:p-8">
       <div className="hidden lg:block">
         <Image
           unoptimized
@@ -35,11 +35,13 @@ const SimilarTopics = ({
           </h3>
         </div>
 
-        <div className="max-w-[890px] space-y-[15px] divide-y divide-[#E5E5E5]">
+        <div className="w-full">
           {similarQuestions.length > 0 ? (
-            similarQuestions.map((item) => (
+            similarQuestions.map((item, index) => (
               <button
-                className="flex cursor-pointer items-center gap-4 pt-3.5"
+                className={`flex w-full cursor-pointer items-center gap-4 py-4 text-left ${
+                  index > 0 ? "border-t border-gray-200" : ""
+                }`}
                 key={item}
                 onClick={() => {
                   reset();
@@ -62,8 +64,8 @@ const SimilarTopics = ({
             ))
           ) : (
             <>
-              <div className="h-10 w-full animate-pulse rounded-md bg-gray-300" />
-              <div className="h-10 w-full animate-pulse rounded-md bg-gray-300" />
+              <div className="mb-4 h-10 w-full animate-pulse rounded-md bg-gray-300" />
+              <div className="mb-4 h-10 w-full animate-pulse rounded-md bg-gray-300" />
               <div className="h-10 w-full animate-pulse rounded-md bg-gray-300" />
             </>
           )}

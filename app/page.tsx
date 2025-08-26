@@ -9,17 +9,13 @@ import SimilarTopics from "@/components/SimilarTopics";
 import Sources from "@/components/Sources";
 import Image from "next/image";
 import { useRef, useState } from "react";
-import {
-  createParser,
-  ParsedEvent,
-  ReconnectInterval,
-} from "eventsource-parser";
+import { SearchResults } from "@/utils/sharedTypes";
 
 export default function Home() {
   const [promptValue, setPromptValue] = useState("");
   const [question, setQuestion] = useState("");
   const [showResult, setShowResult] = useState(false);
-  const [sources, setSources] = useState<{ name: string; url: string }[]>([]);
+  const [sources, setSources] = useState<SearchResults[]>([]);
   const [isLoadingSources, setIsLoadingSources] = useState(false);
   const [answer, setAnswer] = useState("");
   const [similarQuestions, setSimilarQuestions] = useState<string[]>([]);
@@ -34,10 +30,7 @@ export default function Home() {
     setQuestion(newQuestion);
     setPromptValue("");
 
-    await Promise.all([
-      handleSourcesAndAnswer(newQuestion),
-      handleSimilarQuestions(newQuestion),
-    ]);
+    await handleSourcesAndAnswer(newQuestion);
 
     setLoading(false);
   };
@@ -48,68 +41,64 @@ export default function Home() {
       method: "POST",
       body: JSON.stringify({ question }),
     });
+    let sourcesLocal = [];
     if (sourcesResponse.ok) {
-      let sources = await sourcesResponse.json();
-
-      setSources(sources);
+      sourcesLocal = await sourcesResponse.json();
+      setSources(sourcesLocal);
     } else {
       setSources([]);
     }
     setIsLoadingSources(false);
+
+    // Generate similar questions using both question and sources
+    handleSimilarQuestions(question, sourcesLocal);
 
     const response = await fetch("/api/getAnswer", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ question, sources }),
+      body: JSON.stringify({ question, sources: sourcesLocal }),
     });
 
     if (!response.ok) {
       throw new Error(response.statusText);
     }
 
-    if (response.status === 202) {
-      const fullAnswer = await response.text();
-      setAnswer(fullAnswer);
-      return;
+    // Handle the streaming response
+    const reader = response.body?.getReader();
+    if (!reader) {
+      throw new Error('No response body');
     }
 
-    // This data is a ReadableStream
-    const data = response.body;
-    if (!data) {
-      return;
-    }
-
-    const onParse = (event: ParsedEvent | ReconnectInterval) => {
-      if (event.type === "event") {
-        const data = event.data;
-        try {
-          const text = JSON.parse(data).text ?? "";
-          setAnswer((prev) => prev + text);
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    };
-
-    // https://web.dev/streams/#the-getreader-and-read-methods
-    const reader = data.getReader();
     const decoder = new TextDecoder();
-    const parser = createParser(onParse);
     let done = false;
+    let accumulatedText = '';
+
     while (!done) {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
-      const chunkValue = decoder.decode(value);
-      parser.feed(chunkValue);
+
+      if (done) break;
+
+      // Process each chunk of data
+      const chunk = decoder.decode(value, { stream: true });
+
+      // The Vercel AI SDK streams text directly, so we can append it directly
+      if (chunk) {
+        accumulatedText += chunk;
+        setAnswer(accumulatedText);
+      }
     }
   }
 
-  async function handleSimilarQuestions(question: string) {
+  async function handleSimilarQuestions(
+    question: string,
+    sources: SearchResults[],
+  ) {
     let res = await fetch("/api/getSimilarQuestions", {
       method: "POST",
-      body: JSON.stringify({ question }),
+      body: JSON.stringify({ question, sources }),
     });
     let questions = await res.json();
     setSimilarQuestions(questions);
@@ -140,7 +129,7 @@ export default function Home() {
           <div className="flex h-full min-h-[68vh] w-full grow flex-col justify-between">
             <div className="container w-full space-y-2">
               <div className="container space-y-2">
-                <div className="container flex w-full items-start gap-3 px-5 pt-2 lg:px-10">
+                <div className="container flex w-full items-start gap-3 px-5 py-3 lg:px-10">
                   <div className="flex w-fit items-center gap-4">
                     <Image
                       unoptimized

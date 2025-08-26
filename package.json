@@ -9,17 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mozilla/readability": "^0.5.0",
-    "eventsource-parser": "^1.1.2",
-    "jsdom": "^24.1.0",
+    "@ai-sdk/togetherai": "^1.0.3",
+    "ai": "^5.0.8",
+    "exa-js": "^1.8.27",
     "next": "14.2.3",
-    "next-plausible": "^3.12.0",
+    "next-plausible": "^3.12.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-hot-toast": "^2.4.1",
-    "together-ai": "^0.6.0-alpha.3",
-    "zod": "^3.23.8",
-    "zod-to-json-schema": "^3.23.0"
+    "react-hot-toast": "^2.5.2",
+    "together-ai": "0.21.1"
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.6",
