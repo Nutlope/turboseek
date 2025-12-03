@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   let { question } = await request.json();
 
   try {
-    const response = await exaClient.searchAndContents(question, {
+    const response = await exaClient.search(question, {
       numResults: 9,
       excludeDomains: excludedSites,
       type: "auto",
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     let results: SearchResults[] = response.results.map((result) => ({
       title: result.title || undefined,
       url: result.url,
-      content: result.text
+      content: result.text,
     }));
 
     return NextResponse.json(results);
