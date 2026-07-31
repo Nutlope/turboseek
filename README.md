@@ -15,7 +15,7 @@
 - Together AI for LLM inference
 - OpenAI GPT-OSS 20B for the LLM
 - Exa.ai for the search API
-- Helicone for observability
+- Braintrust for LLM observability
 - Plausible for website analytics
 
 ## How it works
@@ -31,7 +31,7 @@
 1. Fork or clone the repo
 2. Create an account at [Together AI](https://togetherai.link/?utm_source=turboseek&utm_medium=referral&utm_campaign=example-app) for the LLM
 3. Create an account at [SERP API](https://serper.dev/) or with Azure ([Bing Search API](https://www.microsoft.com/en-us/bing/apis/bing-web-search-api))
-4. Create an account at [Helicone](https://www.helicone.ai/) for observability
+4. Create an account at [Braintrust](https://www.braintrust.dev/) for observability
 5. Create a `.env` (use the `.example.env` for reference) and replace the API keys
 6. Run `npm install` and `npm run dev` to install dependencies and run locally
 
