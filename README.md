@@ -13,7 +13,7 @@
 
 - Next.js app router with Tailwind
 - Together AI for LLM inference
-- OpenAI gpt-oss models and Llama 3.1 8B for the LLMs
+- OpenAI GPT-OSS 20B for the LLM
 - Exa.ai for the search API
 - Helicone for observability
 - Plausible for website analytics
@@ -24,7 +24,7 @@
 2. Make a request to the bing search API to look up the top 6 results and show them
 3. Scrape text from the 6 links bing sent back and store it as context
 4. Make a request to gpt-oss with the user's question + context & stream it back to the user
-5. Make another request to Llama 3.1 8B to come up with 3 related questions the user can follow up with
+5. Make another request to GPT-OSS 20B to come up with 3 related questions the user can follow up with
 
 ## Cloning & running
 

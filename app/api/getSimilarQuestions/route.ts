@@ -45,7 +45,7 @@ Generate 3 related follow-up questions based on the original question and the se
       ],
       // @ts-ignore
       response_format: { type: "json_object", schema: jsonSchema },
-      model: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+      model: "openai/gpt-oss-20b",
     });
 
     let response = similarQuestions.choices?.[0].message?.content || '{"questions": []}';
